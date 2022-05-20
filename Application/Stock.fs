@@ -17,7 +17,7 @@ let stockOverview (dataAccess : IStockDataAccess) : List<Bin> =
 
 type ProductsOverview = Set<Product * Quantity>
 
-let productsInStock ``what parameters are needed here?`` : ProductsOverview =
-    let products = Stock.allProducts (failwith "Exercise 0: Fill this in.")
+let productsInStock(bins) : ProductsOverview =
+    let products = Stock.allProducts (bins)
     products
     |> failwith "Exercise 0: Complete this implementation."

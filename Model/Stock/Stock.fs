@@ -11,7 +11,7 @@ type Quantity = int
 
 let allProducts bins : List<Product> =
     bins
-    |> Seq.choose (failwith "Exercise 0: Fill this in to complete this function. Use type inference as a guide.")
+    |> Seq.choose ()
     |> Seq.map Product
     |> Seq.toList
 
