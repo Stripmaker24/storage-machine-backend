@@ -13,7 +13,6 @@ open StorageMachine
 open StorageMachine.Stock
 open StorageMachine.Repacking
 
-/// Assembles the ASP.NET "application" from various framework modules.
 let private configureApp (app: IApplicationBuilder) =
     let errorHandler (ex: Exception) (log: ILogger) =
         log.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
@@ -25,25 +24,20 @@ let private configureApp (app: IApplicationBuilder) =
         .UseStaticFiles()
         .UseAuthentication()
         .UseAuthorization()
-        // Provide Giraffe with combined HTTP handlers
         .UseGiraffe(HttpHandlers.requestHandlers)
 
-/// Prepares dependency injection consisting of framework and application-specific components.
 let private configureServices (services: IServiceCollection) =
     services
         .AddHsts(fun options -> options.MaxAge <- TimeSpan.FromDays(180.0))
         .AddAuthorization()
         .AddAuthentication(fun options -> options.DefaultScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
         .Services
-        // Data access implementation of the Stock component
         .AddSingleton<Stock.IStockDataAccess>(Stock.stockPersistence)
-        // Data access implementation of the Repacking component
         .AddSingleton<Repacking.IBinTreeDataAccess>(Repacking.binTreeDataAccess)
         .AddGiraffe()
         .AddSingleton<Json.ISerializer>(ThothSerializer (skipNullField = false, caseStrategy = CaseStrategy.CamelCase))
         |> ignore
 
-/// The main entry point of the back-end.
 [<EntryPoint>]
 let main argv =
     try

@@ -1,5 +1,4 @@
-﻿/// This module exposes use-cases of the Repacking component as an HTTP Web service using Giraffe.
-module StorageMachine.Repacking.Repacking
+﻿module StorageMachine.Repacking.Repacking
 
 open FSharp.Control.Tasks
 open Giraffe
@@ -9,7 +8,6 @@ open StorageMachine
 open Common
 open Repacking
 
-/// Retrieve a textual representation of a single bin tree stored in the Storage Machine.
 let viewBinTree binIdentifier (next: HttpFunc) (ctx: HttpContext) =
     task {
         match BinIdentifier.make binIdentifier with
@@ -21,7 +19,6 @@ let viewBinTree binIdentifier (next: HttpFunc) (ctx: HttpContext) =
             return! ctx.WriteStringAsync (string binTree)
     }
 
-/// Count all products contained in all bins of a single bin tree currently stored in the Storage Machine.
 let productCount binIdentifier (next: HttpFunc) (ctx: HttpContext) =
     task {
         match BinIdentifier.make binIdentifier with
@@ -36,7 +33,6 @@ let productCount binIdentifier (next: HttpFunc) (ctx: HttpContext) =
                 return! ctx.WriteStringAsync (sprintf "The bin tree contains %d products" count)
     }
 
-/// Defines URLs for functionality of the Repacking component and dispatches HTTP requests to those URLs.
 let handlers : HttpHandler =
     choose [
         GET >=> routef "/bin/tree/%s" viewBinTree
