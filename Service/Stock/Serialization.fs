@@ -29,9 +29,10 @@ let decoderPartNumber : Decoder<PartNumber> =
         | Error validationMessage -> Decode.fail validationMessage
     )
 
-let encoderProduct : Encoder<Product> = fun product ->
-    failwith "Exercise 0: choose your own serialized representation of a Product and implement it here."
-
+let encoderProduct : Encoder<Product> = fun (Product(PartNumber(pn))) ->
+    Encode.object [
+                "id", (Encode.string pn)
+            ]
 let encoderProductsOverview : Encoder<ProductsOverview> = fun productsOverview ->
     Encode.seq [
         for (product, quantity) in productsOverview do

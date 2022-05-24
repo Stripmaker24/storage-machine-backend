@@ -20,4 +20,6 @@ type ProductsOverview = Set<Product * Quantity>
 let productsInStock(bins) : ProductsOverview =
     let products = Stock.allProducts (bins)
     products
-    |> failwith "Exercise 0: Complete this implementation."
+    |> Stock.totalQuantity
+    |> Map.toList
+    |> Set.ofList

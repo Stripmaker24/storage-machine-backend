@@ -11,11 +11,12 @@ type Quantity = int
 
 let allProducts bins : List<Product> =
     bins
-    |> Seq.choose ()
+    |> Seq.choose (fun n -> if Bin.isNotEmpty(n) = true then Some n.Content.Value else None)
     |> Seq.map Product
     |> Seq.toList
 
-let totalQuantity products : Map<Product, Quantity> =
+let totalQuantity (products:List<Product>) : Map<Product, Quantity> =
     products
-    |> failwith "Exercise 0: Fill this in to complete this function. Use type inference as a guide."
+    |> Seq.countBy id
     |> Map.ofSeq
+    //hier komen de producten binnen die vervolgens op de een of andere manier gekoppeld moeten worden aan een hoeveelheid. Iets met map?
