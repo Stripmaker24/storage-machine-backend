@@ -28,11 +28,17 @@ let decoderPartNumber : Decoder<PartNumber> =
         | Ok partNumber -> Decode.succeed partNumber
         | Error validationMessage -> Decode.fail validationMessage
     )
+let decoderBin: Decoder<Bin> =
+    Decode.object(fun post ->{
+        Identifier = post.Required.Raw (Decode.field "Identifier" decoderBinIdentifier)
+        Content = post.Optional.Raw (Decode.field "Content" decoderPartNumber)
+    })
 
 let encoderProduct : Encoder<Product> = fun (Product(PartNumber(pn))) ->
     Encode.object [
-                "id", (Encode.string pn)
-            ]
+        "id", (Encode.string pn)
+    ]
+
 let encoderProductsOverview : Encoder<ProductsOverview> = fun productsOverview ->
     Encode.seq [
         for (product, quantity) in productsOverview do
