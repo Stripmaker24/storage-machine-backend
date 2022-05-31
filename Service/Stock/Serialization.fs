@@ -30,8 +30,8 @@ let decoderPartNumber : Decoder<PartNumber> =
     )
 let decoderBin: Decoder<Bin> =
     Decode.object(fun post ->{
-        Identifier = post.Required.Raw (Decode.field "Identifier" decoderBinIdentifier)
-        Content = post.Optional.Raw (Decode.field "Content" decoderPartNumber)
+        Identifier = post.Required.Field "Identifier" decoderBinIdentifier
+        Content = post.Optional.Field "Content" decoderPartNumber
     })
 
 let encoderProduct : Encoder<Product> = fun (Product(PartNumber(pn))) ->
