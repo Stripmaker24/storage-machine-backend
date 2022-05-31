@@ -19,4 +19,3 @@ let totalQuantity (products:List<Product>) : Map<Product, Quantity> =
     products
     |> Seq.countBy id
     |> Map.ofSeq
-    //hier komen de producten binnen die vervolgens op de een of andere manier gekoppeld moeten worden aan een hoeveelheid. Iets met map?
