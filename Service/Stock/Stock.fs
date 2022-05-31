@@ -38,9 +38,6 @@ let AddBin(next: HttpFunc)(ctx: HttpContext) =
         match decoderResult with
         | Error message -> return! RequestErrors.BAD_REQUEST message next ctx
         | Ok bin  ->  return! ThothSerializer.RespondJson bin Serialization.encoderBin next ctx
-        //let returnString = sprintf "Bin id: %s" (bin.ToString())
-        //let newBin = Serialization.decoderBin(bin)
-        //return! text returnString next ctx
     }
 
 let handlers : HttpHandler =
