@@ -32,11 +32,17 @@ let productsInStock (next: HttpFunc) (ctx: HttpContext) =
 
 let AddBin(next: HttpFunc)(ctx: HttpContext) =
     task{
-        let dataAccess = ctx.GetService<IStockDataAccess>()
         let! decoderResult = ThothSerializer.ReadBody ctx Serialization.decoderBin
         match decoderResult with
         | Error message -> return! RequestErrors.BAD_REQUEST message next ctx
-        | Ok bin -> //need to add the bin to the database then return the ok message
+        | Ok bin -> 
+            let dataAccess = ctx.GetService<IStockDataAccess>()
+            let result = dataAccess.StoreBin bin
+            match result with
+            | Ok _ -> return! Successful.created (text " Good job!" ) next ctx
+            | Error message -> return! RequestErrors.notAcceptable (text message) earlyReturn ctx
+            
+            
     }
 
 let handlers : HttpHandler =

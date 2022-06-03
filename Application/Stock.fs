@@ -6,7 +6,7 @@ open Stock
 
 type IStockDataAccess =
     abstract RetrieveAllBins : unit -> List<Bin>
-    abstract StoreBin: Bin -> string
+    abstract StoreBin: Bin -> Result<unit, string>
 
 let binOverview (dataAccess : IStockDataAccess) : List<Bin> =
     dataAccess.RetrieveAllBins ()
@@ -25,5 +25,5 @@ let productsInStock(bins) : ProductsOverview =
     |> Map.toList
     |> Set.ofList
 
-let storeBin(dataAccess : IStockDataAccess)(bin : Bin) : string =
+let storeBin(dataAccess : IStockDataAccess)(bin : Bin) : Result<unit, string> =
     dataAccess.StoreBin(bin)
